@@ -43,7 +43,7 @@ Use a clear commit message like Submit HW01 - Jane Smith so your instructor can 
 
 
 ## **Step 5:** Share Your Repo Link  
-Once you've pushed your work, submit your fork's GitHub URL on [Canvas/course portal]. It should look like:
+Once you've pushed your work, submit your fork's GitHub URL on Brightspace. It should look like:
 https://github.com/YOUR-USERNAME/REPO-NAME
 I will visit your repo directly to review your submission. The timestamp of your latest commit counts as your submission time.
 
