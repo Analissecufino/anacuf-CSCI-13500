@@ -47,7 +47,7 @@ int main(){
         }
     }
 
-//here is where the actual arithmetic will be performed. each case corresponds with a specific operation
+//here is where the actual arithmetic will be performed. each case corresponds with a specific operation to be performed on the two input numbers
 
  switch (operation){
 
@@ -73,6 +73,7 @@ int main(){
 
  } 
 
+ // this will display the answer after numbers and operations have been input 
  std::cout << "The answer is: " << calculator_answer << std::endl;
 
  return 0;
