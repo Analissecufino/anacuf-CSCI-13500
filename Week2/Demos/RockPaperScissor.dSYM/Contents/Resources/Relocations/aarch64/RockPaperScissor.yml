@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/analissecufino/anacuf-CSCI-13500/Week2/Demos/RockPaperScissor'
+relocations:     []
+...
