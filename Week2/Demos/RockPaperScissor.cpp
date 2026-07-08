@@ -1,211 +1,258 @@
-<<<<<<< HEAD
 #include <iostream>
 #include <string>
 #include <random>
 
 
+//function to tell player about the game and give instructions on how to play
+
+void DisplayWelcomeMessage(){
+        
+    std::cout << "\n\nLet's play Rock Paper Scissors!\n\n";
+   
+    std::cout << "Best of 3 rounds wins\n\n";
+    
+    std::cout << "Type in either rock, paper, or scissor when it is your turn\n\n";
+}
+
+// function to display current round count 
+
+void DisplayRoundCount(int round_number){
+
+    std::cout << "-----------------------------------";
+
+    std::cout << "\n\nRound " << round_number << "\n\n";
+    
+    std::cout << "-----------------------------------\n\n";
+}
+
+// function to get player move
+
+std::string GetPlayerMove(){
+
+    std::string player_move;
+
+    std::cout << "Choose rock, paper, or scissor: ";
+
+    std::cin >> player_move;
+
+    // validate player move input 
+
+    while (player_move != "rock" && player_move != "paper" && player_move != "scissor"){
+        std::cout << "\nInvalid input. Please type either rock, paper, or scissor\n\n";
+        std::cin >> player_move;
+    }
+
+    return player_move;
+}
+
+// function to get bot move 
+
+std::string GetBotMove(){
+
+    // generate random number for bot move 
+    
+    int bot_move = rand() % 3;
+
+    if (bot_move == 0){
+        return "rock";
+    }
+
+    else if (bot_move == 1){
+        return "paper";
+    }
+
+    else{
+        return "scissor";
+    }
+
+}
+
+// function to decide round winner or declare tie 
+
+std::string DecideRoundWinner(std::string player_move, std::string bot_move){
+
+    // when player and bot have the same move it is declared as a tie. declare first to avoid more statements to define when bot wins
+
+    if(player_move == bot_move){
+        return "Tie";
+    }
+
+    // implementing scoring standard for rock paper scissors 
+
+    else if (player_move == "rock" && bot_move == "scissor"){
+        return "You";
+    }
+
+    else if (player_move == "paper" && bot_move == "rock"){
+        return "You";             
+    }
+
+    else if (player_move == "scissor" && bot_move == "paper"){
+        return "You";             
+    }
+
+    else{
+        return "Bot";
+    }
+}
+
+// function to calculate score after each round. int& reference score variables in main to increment 
+
+void UpdateScore(std::string round_winner, int& player_score, int& bot_score){
+    
+    // when player wins a round they get a +1 point 
+
+    if(round_winner == "You"){
+        player_score++;
+    }
+
+    // when bot wins a round it gets a +1 point 
+
+    else if(round_winner == "Bot"){
+        bot_score++;
+    }
+}
+
+// function to display round summary (moves, round winner or tie, score after round)
+
+void DisplayRoundSummary(std::string player_move, std::string bot_move, int player_score, int bot_score, std::string round_winner){
+
+    // display player and bot move choice 
+
+    std::cout << "\n\nYou chose: " << player_move << " | Bot chose: " << bot_move << "\n\n"; 
+
+    // Round result messages displayed, decided through if statements 
+
+    if(round_winner == "Tie"){
+        std::cout << "\nIt's a tie! No one gets the point.\n\n";
+    }
+    
+
+    else if(round_winner == "You"){
+        std::cout << "\nYou won this round!\n\n";
+    }
+
+    else{
+        std::cout << "\nBot won this round. \n\n";
+    }
+
+    // display current round score 
+
+    std::cout << "\nYour score is: " << player_score << " | Bot score is: " << bot_score << "\n\n";
+        
+}
+
+// function to display final winner or tie 
+
+void DisplayFinalScore(int player_score, int bot_score){
+
+    // we are comparing the scores at the end of the for loop to declare a winner or tie 
+
+    if(player_score > bot_score){
+        std::cout << "-----------------------------------";
+        std::cout << "\n\nPlayer wins! The Player final score is: " << player_score << " | Bot final score is: " << bot_score << "\n\n";
+    }
+
+    else if(bot_score > player_score){
+        std::cout << "-----------------------------------";
+        std::cout << "\n\nBot wins :( The bot final score is: " << bot_score << " | Player final score is: " << player_score << "\n\n";
+    }
+
+    else{
+        std::cout << "-----------------------------------";
+        std::cout << "\n\nTie! The Player final score is: " << player_score << " | Bot final score is: " << bot_score << "\n\n";      
+    }
+}
+
+// function to ask for rematch
+
+char AskForRematch(){
+    char rematch;
+    
+    // ask user if they want to play again or quit 
+
+    std::cout << "Would you like a rematch? Type y to continue or q to quit: " << std::endl;
+    std::cin >> rematch;
+
+    //validate user input for rematch
+
+    while (rematch != 'y' && rematch != 'q'){
+
+        std::cout << "\n\nInvalid input. Type y to continue or q to quit: ";
+        std::cin >> rematch;
+    }
+
+    return rematch;
+}
+        
+
 int main(){
    
-    //store user choice to continue here
+    //store user choice to play again or not here
 
     char rematch;
 
     //do while to run at least once and then ask player if they want to play again at the end 
 
     do{
-   
-        //tell player the game and give instructions to play
-        
-        std::cout << "\n\nLet's play Rock Paper Scissors!\n\n";
-   
-        std::cout << "Best of 3 rounds wins\n\n";
-    
-        std::cout << "Type in either rock, paper, or scissor when it is your turn\n\n";
-  
+        // call DisplayWelcomeMessage to print instructions 
 
-   
+        DisplayWelcomeMessage();
+
         // start game (declare variables to reset at the beginning of every game)
 
         int player_score = 0;
         int bot_score = 0;
-        std::string player_move = "";
-        int bot_move = 0;
-        std::string bot_pick = ""; 
-
+    
         // three rounds in game loop
 
         for (int rounds = 0; rounds < 3; rounds++){
 
-            // check for early winner. stop game if someone has 2 points 
+            // check for early winner. stop game if someone has 2 points. decided to leave as is instead of in function 
 
             if (player_score >= 2 || bot_score >= 2){
                 break;
             }
 
-            // display current round number 
+            // call DisplayRoundCount to print current round number 
+
+            DisplayRoundCount(rounds + 1);
         
-            std::cout << "-----------------------------------";
-            std::cout << "\n\nRound " << rounds+1 << "\n\n";
-            std::cout << "-----------------------------------\n\n";
+            // call GetPlayerMove to get player move and validate it 
 
-            // ask for user input for their move 
+            std::string player_move = GetPlayerMove();
 
-            std::cout << "Choose rock, paper or scissor: ";
-            std::cin >> player_move;
-       
+            // call GetBotMove to generate random bot move 
 
-            //validate input to make sure only player move in lowercase is accepted
+            std::string bot_move = GetBotMove();
+
+            // call DecideRoundWinner to find out who won the round 
+
+            std::string round_winner = DecideRoundWinner(player_move, bot_move);
+
+            // call UpdateScore to calculate current player score and bot score 
             
-            while (player_move != "rock" && player_move != "paper" && player_move != "scissor"){
-            
-                std::cout << "\nInvalid input. Please type either rock, paper, or scissor\n\n";
-                std::cin >> player_move;
-            }
+            UpdateScore(round_winner, player_score, bot_score);
 
-            // generate random for bot move 
-            bot_move = rand() % 3;
+            // call DisplayRoundSummary to print players current move, round status, and score for every round 
 
-            if (bot_move == 0){
-                bot_pick = "rock";
-            }
-            else if (bot_move == 1){
-                bot_pick = "paper";
-            }
-            else{
-                bot_pick = "scissor";
-            }
-
-            //display user and bot move
-
-            std::cout << "\n\nYou chose: " << player_move << " | Bot chose: " << bot_pick << "\n\n";
-       
-            // compare moves and update the score. No need to add score when its a tie as nothing changes 
-
-            if (player_move == bot_pick){
-                std::cout << "\nIt's a tie! No one gets the point.\n\n";
-            
-            }
-            else if (player_move == "rock" && bot_pick == "scissor"){
-                player_score++;
-                std::cout << "\nYou won this round!\n\n";
-            
-            }
-            else if (player_move == "paper" && bot_pick == "rock"){
-                player_score++;
-                std::cout << "\nYou won this round!\n\n";
-            }
-            else if (player_move == "scissor" && bot_pick == "paper"){
-                player_score++;
-                std::cout << "\nYou won this round!\n\n";
-            }
-            else{
-                bot_score++;
-                std::cout << "\nBot won this round. \n\n";
-            }
-    
-            // display current user and bot score for every round 
-
-            std::cout << "\nYour score is: " << player_score << " | Bot score is: " << bot_score << "\n\n";
-        
-
-        }
-        // Declare winner or tie and display final score
-
-        if (player_score > bot_score){
-            std::cout << "-----------------------------------";
-            std::cout << "\n\nPlayer wins! The Player final score is: " << player_score << " | Bot final score is: " << bot_score << "\n\n";
-        }
-        else if (bot_score > player_score){
-            std::cout << "-----------------------------------";
-            std::cout << "\n\nBot wins :( The bot final score is: " << bot_score << " | Player final score is: " << player_score << "\n\n";
-        }
-        else{
-            std::cout << "\n\nTie! The Player final score is: " << player_score << " | Bot final score is: " << bot_score << "\n\n";
-        }   
-
-        // ask user if they want to play again or quit 
-
-        std::cout << "Would you like a rematch? Type y to continue or q to quit: " << std::endl;
-        std::cin >> rematch;
-
-        //validate user input for rematch
-
-        while (rematch != 'y' && rematch != 'q'){
-            std::cout << "\n\nInvalid input. Type y to continue or q to quit: ";
-            std::cin >> rematch;
+            DisplayRoundSummary(player_move, bot_move, player_score, bot_score, round_winner);
         }
 
-        // while condition to continue if user types y 
-        
-    }while (rematch == 'y');
-=======
-#include <iostream>
-#include <random>
+        // call DisplayFinalScore to declare winner and final score 
 
+        DisplayFinalScore(player_score, bot_score);  
+      
+        // call AskForRematch to ask user for rematch
 
-int main(){
-
-    // start game (declare variables)
-    int player_score = 0;
-    int bot_score = 0;
-    std::string player_move = "";
-    int bot_move = 0;
-    std::string bot_pick = ""; 
-
-    // game loop
-    for (int rounds = 0; rounds < 3; rounds++){
-
-        // check for early winner 
-        if (player_score >= 2 || bot_score >= 2){
-            break;
-        }
-
-        // ask for user input 
-        std::cout << "Choose rock, paper or scissor: ";
-        std::cin >> player_move;
-
-        // generate bot input 
-        bot_move = rand() % 3;
-
-        if (bot_move == 0){
-            bot_pick = "Rock";
-        }
-        else if (bot_move == 1){
-            bot_pick = "Paper";
-        }
-        else{
-            bot_pick = "Scissor";
-        }
-
-        // figure out the score 
-        if (player_move == bot_pick){
-            player_score += 0;
-            bot_score += 0;
-        }
-        else if (player_move == "Rock" && bot_pick == "Scissor"){
-            player_score++;
-        }
-        else if (player_move == "Paper" && bot_pick == "Rock"){
-            player_score++;
-        }
-        else if (player_move == "Scissor" && bot_pick == "Paper"){
-            player_score++;
-        }
-        else{
-            bot_score++;
-        }
-
-    }
-    // Declare winner or tie
-    if (player_score > bot_score){
-        std::cout << "Player wins!" << std::endl;
-    }
-    else if (bot_score > player_score){
-        std::cout << "Bot wins!" << std::endl;
-    }
-    else{
-        std::cout << "Tie!" << std::endl;
+        rematch = AskForRematch();    
     }
 
->>>>>>> upstream/main
+    // do while loop to continue if user types y 
+
+    while (rematch == 'y');
 }
+
+
+
+
